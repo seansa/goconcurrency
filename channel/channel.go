@@ -1,8 +1,6 @@
 package main
 
-import (
-	"personal/gogui/channel/ejemplos"
-)
+import "github.com/seansa/goconcurrency/channel/ejemplos"
 
 func main() {
 	ejemplos.Ejemplo2()
