@@ -6,7 +6,7 @@ import (
 )
 
 func imprimir(i int, sinc chan string) {
-	d := 10 * time.Duration(i%2) * time.Millisecond
+	d := 1000 * time.Duration(i%5) * time.Millisecond
 	time.Sleep(d)
 	sinc <- fmt.Sprintf("%v numero: %v", d, i)
 }

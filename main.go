@@ -13,7 +13,7 @@ type Mugir struct {
 }
 
 func main() {
-	runGranja(2)
+	runGranja(3)
 	fmt.Println("Listo!!")
 }
 
@@ -37,14 +37,14 @@ func vaca(num int, canalVacas chan Mugir) {
 	for {
 		select {
 		case canalVacas <- Mugir{num, "muu", canal}:
-			fmt.Println("Vaca numero", num, "mugiendo a travez del canalVacas")
+			fmt.Println("Vaca numero", num, "mugiendo a traves del canalVacas")
 			<-canal
 			fmt.Println("Vaca numero", num, "está siendo ordeñada y deja de mugir")
-			canalVacas <- Mugir{num, "moohh", nil}
+			canalVacas <- Mugir{num, "muuhh", nil}
 			fmt.Println("Vaca numero", num, "mugio una última vez como alivio")
 			return
 		default:
-			fmt.Println("Vaca numero", num, "mugiendo a travez del canalVacas y fue ignorada")
+			fmt.Println("Vaca numero", num, "mugiendo a traves del canalVacas y fue ignorada")
 			time.Sleep(time.Duration(rand.Int31n(1000)) * time.Millisecond)
 		}
 	}
@@ -55,7 +55,7 @@ func granjero(vacas int, canalVacas chan Mugir, canalGranjero chan string) {
 	fmt.Println("El granjero comienza a escuchar el canalVacas")
 	for vacasSinAlivio := vacas; vacasSinAlivio > 0; {
 		muu := <-canalVacas
-		if muu.Sonido == "moohh" {
+		if muu.Sonido == "muuhh" {
 			fmt.Println("El granjero escuchó un mugido de alivio de vaca numero", muu.Vaca)
 			vacasSinAlivio--
 		} else {

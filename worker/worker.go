@@ -14,7 +14,7 @@ type Job struct {
 type Result struct {
 	job         Job
 	sumofdigits int
-	pool        int
+	worker      int
 }
 
 var jobs = make(chan Job, 10)
@@ -22,10 +22,10 @@ var results = make(chan Result, 10)
 
 func main() {
 	startTime := time.Now()
-	go allocate(100) //N Jobs
+	go allocate(20) //N Jobs
 	done := make(chan bool)
 	go result(done)
-	createWorkerPool(10) //N Workers
+	createWorkerPool(4) //N Workers
 	<-done
 	endTime := time.Now()
 	diff := endTime.Sub(startTime)
@@ -42,9 +42,9 @@ func createWorkerPool(noOfWorkers int) {
 	close(results)
 }
 
-func worker(wg *sync.WaitGroup, pool int) {
+func worker(wg *sync.WaitGroup, worker int) {
 	for job := range jobs {
-		output := Result{job, digits(job.randomno), pool}
+		output := Result{job, digits(job.randomno), worker}
 		results <- output
 	}
 	wg.Done()
@@ -58,7 +58,7 @@ func digits(number int) int {
 		sum += digit
 		no /= 10
 	}
-	time.Sleep(10 * time.Millisecond)
+	time.Sleep(100 * time.Millisecond)
 	return sum
 }
 
@@ -73,7 +73,7 @@ func allocate(noOfJobs int) {
 
 func result(done chan bool) {
 	for result := range results {
-		fmt.Printf("Job id %d on pool %v, input random no %d, sum of digits %d\n", result.job.id, result.pool, result.job.randomno, result.sumofdigits)
+		fmt.Printf("Job id %d on worker %v, input random no %d, sum of digits %d\n", result.job.id, result.worker, result.job.randomno, result.sumofdigits)
 	}
 	done <- true
 }

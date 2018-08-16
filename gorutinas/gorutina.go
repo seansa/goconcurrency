@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-const ESPERA = 20 * time.Millisecond
+const ESPERA = 9 * time.Millisecond
 
 func imprimir(i int) {
 	d := 10 * time.Duration(i%2) * time.Millisecond
